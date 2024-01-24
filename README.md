@@ -19,8 +19,15 @@
 случае такой файл будет создан. 
 - `db` Означает то, что считывание информации или запись результата 
 будет произведена из/в таблицу БД, данные для подключения к которой
-вам будет предложено ввести через терминал.
-- Данныеаргументы можно комбинировать между собой
+вам будет предложено ввести через терминал вручную или ввести путь 
+до файла, в котором уже записаны все эти данные. Пример такого файла
+находится в `/app/connection_info`. 
+  - **!!!ВАЖНО!!!**
+    1. **В первой строке вводится Database URL**
+    2. **Во второй строке вводится USERNAME**
+    3. **В третьей строке вводится PASSWORD**
+  - **Вводятся только данные без описаний лишних символов и тд**
+- Данные аргументы можно комбинировать между собой
 #### Примеры команд для запуска
 - `java -jar test-app.jar - -`
 - `java -jar test-app.jar ./input.txt ./output.txt`
@@ -84,6 +91,38 @@ Result: 5.0
     2 - Create new table
     1
     Enter the name of the table: test_table
+    ````
+- ````
+  java -jar test-app.jar db db
+  Choose how to provide database connection details:
+  1 - Enter details manually
+  2 - Read details from a file
+  Enter your choice (1 or 2): 2
+  Enter the file name: connection_info
+  Enter (1 or 2):
+  1 - Select an existing table
+  2 - Create new table
+  1
+  Enter the name of the table: test_table
+  ID: 1, Operator: add, Numbers: 1 2 3 4, Result: null
+  ID: 2, Operator: mul, Numbers: 1 2 3 4, Result: null
+  ID: 3, Operator: spec_mul, Numbers: 2 3 4, Result: null
+  ID: 4, Operator: pow, Numbers: 2 3, Result: null
+  ID: 5, Operator: pow, Numbers: 2.0 3.0, Result: 8.0
+  ID: 6, Operator: multiply, Numbers: 2.0 2.0 10.0 3.0, Result: 120.0
+  Enter ID: 1
+  Choose how to provide database connection details:
+  1 - Enter details manually
+  2 - Read details from a file
+  Enter your choice (1 or 2): 1
+  Database URL: jdbc:postgresql://localhost:5432/postgres
+  Username: postgres
+  Password: root
+  Enter (1 or 2):
+  1 - Select an existing table
+  2 - Create new table
+  1
+  Enter the name of the table: test_table
     ````
 ### Реализованные сущности
 - `record Pair<T, U>` - Класс Pair представляет собой обобщенную пару 

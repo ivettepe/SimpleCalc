@@ -3,7 +3,11 @@ package com.simple.calc.handler;
 import com.simple.calc.entity.Pair;
 import com.simple.calc.enums.Operator;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
@@ -14,6 +18,7 @@ import java.util.stream.Collectors;
  */
 public class HandlerDB {
     private static final Scanner scanner = new Scanner(System.in);
+    private static String url, username, password;
 
     /**
      * Метод closeScanner закрывает экземпляр сканера.
@@ -29,20 +34,11 @@ public class HandlerDB {
      * @param numbers  список, в который запишутся числа для выполнения операции
      */
     public static void handleDBInput(AtomicReference<Operator> operator, List<Double> numbers) {
-        System.out.println("Enter the database connection details:");
-        String url = askForInput("Database URL: ");
-        String username = askForInput("Username: ");
-        String password = askForInput("Password: ");
-
+        handleDBDetailsInput();
         try (Connection conn = DriverManager.getConnection(url, username, password); Statement stmt = conn.createStatement()) {
-
-            String chooseTable = askForTableSelection();
-
-            String tableName = chooseTable.equals("1") ? askForInput("Enter the name of the table: ") : createAndPopulateTable(stmt);
+            String tableName = askForTableSelection().equals("1") ? askForInput("Enter the name of the table: ") : createAndPopulateTable(stmt);
             retrieveAndPrintData(stmt, tableName);
-
             retrieveDataByID(stmt, operator, numbers, tableName, askForInput("Enter ID: "));
-
         } catch (SQLException e) {
             throw new IllegalArgumentException("Error connecting to the database: " + e.getMessage());
         }
@@ -55,22 +51,65 @@ public class HandlerDB {
      * @param result           результат выполненной операции
      */
     public static void handleDBOutput(Pair<Operator, List<Double>> calculatedString, double result) {
-        System.out.println("Enter the database connection details:");
-        String url = askForInput("Database URL: ");
-        String username = askForInput("Username: ");
-        String password = askForInput("Password: ");
-
+        handleDBDetailsInput();
         try (Connection conn = DriverManager.getConnection(url, username, password); Statement stmt = conn.createStatement()) {
-
-            String chooseTable = askForTableSelection();
-
-            String tableName = chooseTable.equals("1") ? askForInput("Enter the name of the table: ") : createAndPopulateTable(stmt);
-
+            String tableName = askForTableSelection().equals("1") ? askForInput("Enter the name of the table: ") : createAndPopulateTable(stmt);
             processOutputData(stmt, calculatedString, result, tableName);
-
         } catch (SQLException e) {
             throw new IllegalArgumentException("Error connecting to the database: " + e.getMessage());
         }
+    }
+
+    /**
+     * Метод handleDBDetailsInput обрабатывает и записывает данные для подключения в переменные
+     * url, username и password.
+     */
+    private static void handleDBDetailsInput() {
+        System.out.println("Choose how to provide database connection details:");
+        System.out.println("1 - Enter details manually");
+        System.out.println("2 - Read details from a file");
+
+        String choice = askForInput("Enter your choice (1 or 2): ");
+        while (!choice.equals("1") && !choice.equals("2")) {
+            System.out.println("Wrong value. Try again");
+            choice = askForInput("");
+        }
+
+        if (choice.equals("1")) {
+            url = askForInput("Database URL: ");
+            username = askForInput("Username: ");
+            password = askForInput("Password: ");
+        } else {
+            String fileName = askForInput("Enter the file name: ");
+            try {
+                List<String> dbDetails = readDBDetailsFromFile(fileName);
+                url = dbDetails.get(0);
+                username = dbDetails.get(1);
+                password = dbDetails.get(2);
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Error reading database details from file: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Метод readDBDetailsFromFile для чтения деталей подключения к базе данных из файла.
+     *
+     * @param fileName путь до файла с данными для подключения
+     * @return список с данными для подключения к БД (URL, username, password)
+     */
+    private static List<String> readDBDetailsFromFile(String fileName) throws IOException {
+        List<String> dbDetails = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                dbDetails.add(line);
+            }
+        }
+        if (dbDetails.size() != 3) {
+            throw new IOException("Invalid file format");
+        }
+        return dbDetails;
     }
 
     /**
