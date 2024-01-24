@@ -61,6 +61,7 @@ public class CalculatorUtil {
         } else {
             throw new IllegalArgumentException("Invalid output format");
         }
+        System.out.println("Successful!");
     }
 
     /**
