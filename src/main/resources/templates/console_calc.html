@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+  <title>Console mod</title>
+</head>
+
+<body>
+<nav th:replace="~{fragments/header :: nav}">
+</nav>
+<div class="container mt-5" style="text-align: center;">
+  <br/><br/>
+  <h2 style="text-align: center;">Console mod</h2>
+  <form id="calculatorForm" method="post">
+    <div class="column"> <!-- Первый столбец -->
+      <label for="nums">INPUT</label>
+      <input type="text" class="form-control" id="nums" name="display"/>
+    </div>
+    <div class="column"> <!-- Второй столбец -->
+      <label for="result">OUTPUT</label>
+      <input type="text" class="form-control" id="result" name="display" th:readonly="true"/>
+    </div>
+    <br/>
+  </form>
+</div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<div th:replace="~{fragments/scripts :: scripts}"></div>
+
+</body>
+</html>

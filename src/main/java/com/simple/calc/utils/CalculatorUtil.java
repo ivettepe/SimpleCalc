@@ -25,6 +25,26 @@ public class CalculatorUtil {
             numbers.remove(numbers.size() - 1);
             calculatedString = new Pair<>(calculatedString.first(), numbers);
         }
+        return getResult(calculatedString);
+    }
+
+    /**
+     * Метод calculate выполняет операцию калькулятора на основе переданных входных данных.
+     *
+     * @param calculatedString пара, содержащая оператор и список чисел для вычисления
+     * @return результат вычисления
+     */
+    public static double calculate(Pair<Operator, List<Double>> calculatedString) {
+        return getResult(calculatedString);
+    }
+
+    /**
+     * Метод getResult выполняет операцию калькулятора на основе переданных входных данных.
+     *
+     * @param calculatedString пара, содержащая оператор и список чисел для вычисления
+     * @return результат вычисления
+     */
+    private static double getResult(Pair<Operator, List<Double>> calculatedString) {
         if (calculatedString.first() != null) {
             return switch (calculatedString.first()) {
                 case ADD -> add(calculatedString.second());

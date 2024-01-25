@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title>UI mod</title>
+</head>
+
+<body>
+<nav th:replace="~{fragments/header :: nav}">
+</nav>
+<div class="container mt-5" style="text-align: center;">
+    <br/><br/>
+    <h2 style="text-align: center;">UI mod</h2>
+    <form id="calculatorForm" method="post">
+        <div class="column">
+            <label for="operator">OPERATOR</label>
+            <input type="text" class="form-control" id="operator" name="display" th:readonly="true"/>
+        </div>
+        <div class="column">
+            <label for="nums">NUMS</label>
+            <input type="text" class="form-control" id="nums" name="display" th:readonly="true"/>
+        </div>
+        <br/>
+        <div style="max-width: 90%; margin: 0 auto; text-align: center;">
+            <label for="result">RESULT</label>
+            <input type="text" class="form-control mx-auto" id="result" name="display" th:readonly="true"/>
+        </div>
+        <br/>
+
+        <div class="column3"> <!-- Первый столбец -->
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary" onclick="addValue(1)">1</button>
+                <button type="button" class="btn btn-secondary" onclick="addValue(2)">2</button>
+                <button type="button" class="btn btn-secondary" onclick="addValue(3)">3</button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary" onclick="addValue(4)">4</button>
+                <button type="button" class="btn btn-secondary" onclick="addValue(5)">5</button>
+                <button type="button" class="btn btn-secondary" onclick="addValue(6)">6</button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary" onclick="addValue(7)">7</button>
+                <button type="button" class="btn btn-secondary" onclick="addValue(8)">8</button>
+                <button type="button" class="btn btn-secondary" onclick="addValue(9)">9</button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary" onclick="addValue('.')">.</button>
+                <button type="button" class="btn btn-secondary" onclick="addValue(0)">0</button>
+                <button type="button" id="calculateUIButton" class="btn btn-primary" th:text="'='">=</button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary operator" onclick="clearField('nums')">Clear nums</button>
+            </div>
+        </div>
+
+        <div class="column3"> <!-- Второй столбец -->
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary operator" onclick="addValue('-')" th:text="'-'"></button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary operator" onclick="removeSym()" th:text="'Remove symol'"></button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary operator" onclick="clearField('result')">Clear result</button>
+            </div>
+        </div>
+
+        <div class="column3"> <!-- Третий столбец -->
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary operator" onclick="addOperator('add')" th:text="'a1 + a2 + ... + an'"></button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary operator" onclick="addOperator('mul')" th:text="'a1 * a2 * ... * an'"></button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary operator" onclick="addOperator('pow')" th:text="'a ^ b'"></button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary operator" onclick="addOperator('spec_mul')" th:text="'a * b + c'"></button>
+            </div>
+            <br/>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary operator" onclick="clearField('operator')">Clear operator</button>
+            </div>
+        </div>
+    </form>
+</div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<div th:replace="~{fragments/scripts :: scripts}"></div>
+
+</body>
+</html>
